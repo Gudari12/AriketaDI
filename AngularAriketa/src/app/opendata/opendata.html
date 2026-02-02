@@ -1,53 +1,49 @@
-<app-navbar></app-navbar>
-@if (data()?.length > 0) {
+@if (isLoading()) {
+<div class="flex justify-center items-center h-screen">
+    <p class="text-xl text-gray-600">Kargatzen...</p>
+</div>
+
+} @else if (data().length > 0) {
 <div class="p-8">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Ebento Kulturalak</h1>
-    
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Ekitaldi kulturalak</h1>
+
     <div class="overflow-x-auto shadow-md rounded-lg">
-    <table class="w-full border-collapse bg-white">
-        <thead class="bg-gray-100 border-b-2 border-gray-300">
-        <tr>
-            <th class="px-6 py-3 text-left font-semibold text-gray-700">Izena</th>
-            <th class="px-6 py-3 text-left font-semibold text-gray-700">Data</th>
-            <th class="px-6 py-3 text-left font-semibold text-gray-700">Herria</th>
-            <th class="px-6 py-3 text-left font-semibold text-gray-700">Sarrera Prezioa</th>
-        </tr>
-        </thead>
-        <tbody>
-        @for (event of data(); track event.id; let idx = $index) {
-            <tr [class.bg-gray-50]="idx % 2 === 1" class="border-b border-gray-200 hover:bg-blue-50 transition">
-            <td class="px-6 py-4 text-gray-800">{{ event.nameEs || 'N/A' }}</td>
-            <td class="px-6 py-4 text-gray-700">
-                @if (event.startDate) {
-                {{ event.startDate | date: 'dd/MM/yyyy' }}
-                } @else {
-                N/A
+        <table class="w-full border-collapse bg-white">
+            <thead class="bg-gray-100 border-b-2 border-gray-200">
+                <tr>
+                    <th class="px-6 py-3 text-left font-semibold text-gray-700">Izena</th>
+                    <th class="px-6 py-3 text-left font-semibold text-gray-700">Data</th>
+                    <th class="px-6 py-3 text-left font-semibold text-gray-700">Herria</th>
+                    <th class="px-6 py-3 text-left font-semibold text-gray-700">Sarrera Prezioa</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @for (event of data(); track event.id; let i = $index) {
+                <tr [class.bg-gray-50]="i % 2 === 1" class="hover:bg-gray-100 transition">
+                    <td class="px-6 py-4 text-gray-900">
+                        {{ event.nameEs || 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 text-gray-700">
+                        {{ event.startDate | date:'dd/MM/yyyy' }}
+                    </td>
+                    <td class="px-6 py-4 text-gray-700">
+                        {{ event.municipalityEs || 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 text-gray-700">
+                        @if (event.priceEs && event.priceEs !== '0') {
+                        {{ event.priceEs }} €
+                        } @else {
+                        Libre
+                        }
+                    </td>
+                </tr>
                 }
-            </td>
-            <td class="px-6 py-4 text-gray-700">
-                @if (event.municipalityEs) {
-                {{ event.municipalityEs }}
-                } @else {
-                N/A
-                }
-            </td>
-            <td class="px-6 py-4 text-gray-700">
-                @if (event.priceEs && event.priceEs > 0) {
-                {{ event.priceEs }}€
-                } @else {
-                Libre
-                }
-            </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     </div>
 </div>
-} @else {
-<div class="flex justify-center items-center h-screen">
-    <p class="text-xl text-gray-600">Ez dago ezer erregistratuta</p>
+}@else {
+<div class="flex justify-center items-center min-h-[50vh]">
+    <p class="text-xl text-gray-600">Ez dago ebenturik erakusteko (No hay eventos disponibles)</p>
 </div>
 }
-
-<router-outlet></router-outlet>

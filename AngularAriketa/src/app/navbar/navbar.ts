@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { Opendata } from "../opendata/opendata";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',

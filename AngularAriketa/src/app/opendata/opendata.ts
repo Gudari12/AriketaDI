@@ -1,27 +1,26 @@
-import { signal } from '@angular/core';
+import { OnInit, signal } from '@angular/core';
 import { Component, inject } from '@angular/core';
 import { Cliente } from '../cliente';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { Navbar } from "../navbar/navbar";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-opendata',
-  imports: [DatePipe, Navbar, RouterOutlet],
+  standalone: true,
+  imports: [DatePipe],
   templateUrl: './opendata.html',
   styleUrl: './opendata.css',
 })
-export class Opendata {
+export class Opendata implements OnInit{
 
   cliente = inject(Cliente);
   data: any = signal(null);
   route = inject(ActivatedRoute);
   isLoading = signal(true);
-  type = 1;
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      const tipo = params['tipo'];
+      const tipo = +params['tipo'];
       if (tipo) {
         this.cargarEventos(tipo);
       }
@@ -29,12 +28,18 @@ export class Opendata {
   }
 
   private cargarEventos(tipo: number) {
-    this.cliente.getEventosTipo(tipo)
-      .subscribe({next: (response) => {
-        this.data.set(response);
-      }, error: (error) => {
+    this.isLoading.set(true);  // Empieza loading
+    this.cliente.getEventosTipo(tipo).subscribe({
+      next: (response) => {
+        const items = (response as any)?.items || [];
+        this.data.set(items);
+        this.isLoading.set(false);
+      },
+      error: (error) => {
         console.error('Error loading data:', error);
         this.data.set([]);
-      }});
+        this.isLoading.set(false);  // Termina loading incluso en error
+      }
+    });
   }
 }

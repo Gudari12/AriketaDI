@@ -7,6 +7,10 @@ export const routes: Routes = [
         component: Opendata
     },
     {
+        path: 'opendata',
+        component: Opendata
+    },
+    {
         path: '',
         redirectTo: 'eventos/1',
         pathMatch: 'full'
