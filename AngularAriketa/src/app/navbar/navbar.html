@@ -1,0 +1,34 @@
+<nav class="relative bg-gray-800/50 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+        <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+        </div>
+        <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <div class="hidden sm:ml-6 sm:block">
+            <div class="flex space-x-4">
+                <!-- Current: "bg-gray-950/50 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
+                <a [routerLink]="['/eventos', 1]" aria-current="page" class="rounded-md bg-gray-950/50 px-3 py-2 text-sm font-medium text-white">Kontzertuak</a>
+                <a [routerLink]="['/eventos', 3]" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Erakusketa</a>
+                <a [routerLink]="['/eventos', 4]" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Dantza</a>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</nav>
+
+<nav class="w-64 bg-white border-r border-gray-200 p-6 min-h-screen">
+    
+    <ul class="space-y-3">
+    @for (item of menuItems; track item.id) {
+        <li>
+        <a 
+            [routerLink]="['/eventos', item.id]"
+            class="block px-4 py-2 text-gray-700 hover:bg-blue-100 rounded transition"
+        >
+            {{ item.label }}
+        </a>
+        </li>
+    }
+    </ul>
+</nav>
